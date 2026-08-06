@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PhishProbe - paste a complete raw email / .eml and get a full phishing analysis report.">
+  <title>PhishProbe - Full Email Analyzer</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <!--
+    Author: Sathyanarayana
+    PhishProbe - Full Email Analyzer page (/full).
+    Post the complete raw email / .eml source to /api/analyze and render the
+    full report (body, attachments, indicators, authentication, verdict).
+    A URL pasted on its own is also accepted.
+  -->
+
+  <nav class="navbar">
+    <a class="brand" href="/">
+      <img src="/logo.png" class="brand-logo" alt="PhishProbe logo">
+      <span class="brand-name">Phish<span>Probe</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/">Header Analyzer</a>
+      <a href="/full" class="active">Full Email Analyzer</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="hero">
+      <img src="/logo.png" class="hero-logo" alt="PhishProbe logo">
+      <h1>Full Email Analyzer</h1>
+    </div>
+
+    <div class="card">
+      <h2><span class="n">1</span> How do I copy the raw email?</h2>
+      <div class="guide-grid">
+        <div class="guide-card gmail">
+          <div class="g-brand">Gmail</div>
+          <ol>
+            <li>Open the email and click <b>&#8942; (More)</b> &rarr; <b>Show original</b>.</li>
+            <li>Click <b>Download original</b> to get the <b>.eml</b> file.</li>
+            <li>Open the <code>.eml</code> in a text editor and copy everything.</li>
+          </ol>
+        </div>
+        <div class="guide-card yahoo">
+          <div class="g-brand">Yahoo Mail</div>
+          <ol>
+            <li>Open the email and click <b>&#8942; (More)</b> &rarr; <b>View raw message</b>.</li>
+            <li>Select everything (<code>Ctrl+A</code>) and copy (<code>Ctrl+C</code>).</li>
+            <li>That is the complete source - header and body together.</li>
+          </ol>
+        </div>
+        <div class="guide-card outlook">
+          <div class="g-brand">Outlook (web &amp; desktop)</div>
+          <ol>
+            <li>Open the email and click <b>&#8942;</b> &rarr; <b>View</b> &rarr; <b>View message source</b>.</li>
+            <li>Copy the full text that opens.</li>
+            <li>Desktop app: open the email &rarr; <b>File</b> &rarr; <b>Properties</b> &rarr; copy <b>Internet headers</b>.</li>
+          </ol>
+        </div>
+      </div>
+      <p class="empty-note">Paste everything (headers and body), or upload the <code>.eml</code> file directly.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="n">2</span> Paste the complete raw email</h2>
+      <textarea id="email-input" placeholder="Upload or paste text here..."></textarea>
+      <div class="input-actions">
+        <button id="analyze-btn" class="btn">Analyze</button>
+        <button id="upload-btn" class="btn btn-ghost">Upload file</button>
+        <input type="file" id="file-input" accept=".eml,.txt,text/plain,message/rfc822" hidden>
+      </div>
+      <p class="empty-note">Paste the complete raw email and click Analyze.</p>
+    </div>
+
+    <div id="results"></div>
+  </main>
+
+  <footer>
+    <div class="logo-line">
+      <img src="/logo.png" alt="PhishProbe logo">
+      <span>PhishProbe</span>
+    </div>
+    <div>Built by Sathyanarayana</div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

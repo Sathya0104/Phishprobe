@@ -1,0 +1,57 @@
+# PhishProbe .gitignore
+
+# --- Documentation & generated PDFs (keep README.md only) ---
+*.pdf
+*.md
+!README.md
+
+# --- Secrets & local config (never commit API keys) ---
+vt_config.json
+**/vt_config.json
+.env
+.env.*
+*.secret.*
+
+# --- Python artifacts ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.eggs/
+
+# --- Virtual environments & pip-installed packages ---
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+.pip/
+.wheels/
+pip-wheel-metadata/
+
+# --- Build / distribution artifacts ---
+build/
+dist/
+*.whl
+*.tar.gz
+
+# --- Editors / IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs & caches ---
+*.log
+logs/
+.cache/
+.pytest_cache/
+.mypy_cache/

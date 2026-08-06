@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PhishProbe - paste an email header and get an instant phishing risk verdict.">
+  <title>PhishProbe - Header Analyzer</title>
+  <link rel="icon" type="image/png" href="/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <!--
+    Author: Sathyanarayana
+    PhishProbe - Header Analyzer page (/).
+    Post the raw email header (with an optional URL) to /api/analyze-header
+    and render the returned report. Any one field (header OR url) is enough.
+  -->
+
+  <nav class="navbar">
+    <a class="brand" href="/">
+      <img src="/logo.png" class="brand-logo" alt="PhishProbe logo">
+      <span class="brand-name">Phish<span>Probe</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="active">Header Analyzer</a>
+      <a href="/full">Full Email Analyzer</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="hero">
+      <img src="/logo.png" class="hero-logo" alt="PhishProbe logo">
+      <h1>Header Analyzer</h1>
+    </div>
+
+    <div class="card">
+      <h2><span class="n">1</span> How do I copy the header?</h2>
+      <div class="guide-grid">
+        <div class="guide-card gmail">
+          <div class="g-brand">Gmail</div>
+          <ol>
+            <li>Open the email and click <b>&#8942; (More)</b> &rarr; <b>Show original</b>.</li>
+            <li>Press <code>Ctrl+A</code> then <code>Ctrl+C</code> to copy the whole header.</li>
+            <li>Want the full <b>.eml</b>? Click <b>Download original</b> and open the file in a text editor.</li>
+          </ol>
+        </div>
+        <div class="guide-card yahoo">
+          <div class="g-brand">Yahoo Mail</div>
+          <ol>
+            <li>Open the email and click <b>&#8942; (More)</b> &rarr; <b>View raw message</b>.</li>
+            <li>Select everything (<code>Ctrl+A</code>) and copy (<code>Ctrl+C</code>).</li>
+            <li>This gives you the full source (header + body) in one go.</li>
+          </ol>
+        </div>
+        <div class="guide-card outlook">
+          <div class="g-brand">Outlook (web &amp; desktop)</div>
+          <ol>
+            <li>Open the email and click <b>&#8942;</b> &rarr; <b>View</b> &rarr; <b>View message source</b>.</li>
+            <li>Copy the text that opens.</li>
+            <li>Desktop app: open the email &rarr; <b>File</b> &rarr; <b>Properties</b> &rarr; copy <b>Internet headers</b>.</li>
+          </ol>
+        </div>
+      </div>
+      <p class="empty-note">Only the header part is needed here. For the complete analysis (body, links, attachments) use the <a href="/full">Full Email Analyzer</a>.</p>
+    </div>
+
+    <div class="card">
+      <h2><span class="n">2</span> Paste the email header</h2>
+      <textarea id="header-input" placeholder="Upload or paste text here..."></textarea>
+      <div class="input-actions">
+        <button id="analyze-btn" class="btn">Analyze</button>
+        <button id="upload-btn" class="btn btn-ghost">Upload file</button>
+        <input type="file" id="file-input" accept=".eml,.txt,text/plain,message/rfc822" hidden>
+      </div>
+      <p class="empty-note">Paste the header (or upload a file) and click Analyze.</p>
+    </div>
+
+    <div id="results"></div>
+  </main>
+
+  <footer>
+    <div class="logo-line">
+      <img src="/logo.png" alt="PhishProbe logo">
+      <span>PhishProbe</span>
+    </div>
+    <div>Built by Sathyanarayana</div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
