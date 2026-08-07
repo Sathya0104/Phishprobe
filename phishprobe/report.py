@@ -103,12 +103,6 @@ def build_report(parsed, header_norm, basic, received, auth, return_path,
             "raw_blocks": auth.get("raw_blocks", []),
             "has_auth_header": auth.get("has_authentication_results", False),
         },
-        "body": {
-            "plain": parsed["plain_body"],
-            "html": parsed["html_body"],
-            "has_plain": bool(parsed["plain_body"]),
-            "has_html": bool(parsed["html_body"]),
-        },
         "indicators": {
             "emails": emails,
             "urls": ti_results["urls"],

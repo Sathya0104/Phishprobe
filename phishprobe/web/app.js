@@ -69,6 +69,15 @@
 
   function renderSummary(summary) {
     var v = summary.verdict;
+    var note =
+      '<div class="banner-note"><span class="banner-note-icon">&#9888;</span><span>' +
+        "Before taking any action, cross-check the identified indicators (IOCs) against " +
+        "independent threat-intelligence platforms (e.g., VirusTotal, urlscan.io, AbuseIPDB). " +
+        'A detection count of &quot;0/91&quot; only means no engine has flagged the indicator ' +
+        "yet - it is not proof that it is safe. Following the zero-trust principle, never trust, " +
+        "always verify - we recommend manually confirming the flagged domains and URLs before " +
+        "proceeding." +
+      "</span></div>";
     return (
       '<div class="banner ' + verdictClass(v) + '">' +
         '<div class="v-line">' +
@@ -81,6 +90,7 @@
           '" style="width:' + Math.min(100, summary.confidence || 0) + '%"></div></div>' +
         '<div class="rec"><strong>Recommendation:</strong> ' +
           esc(summary.recommendation) + "</div>" +
+        note +
       "</div>"
     );
   }
@@ -223,21 +233,6 @@
     );
   }
 
-  // ---------------------------------------------------------------- body
-
-  // Only the readable plain-text body is shown. The raw HTML source is huge
-  // and meaningless to most users - the links inside it are already reported
-  // in the indicators section, so it is omitted from the view.
-  function renderBody(body) {
-    if (!body) return "";
-    var html = "";
-    if (body.has_plain && body.plain) {
-      html += '<section class="block"><h2>Body</h2><pre class="body-box">' +
-              esc(body.plain) + "</pre></section>";
-    }
-    return html;
-  }
-
   // ------------------------------------------------------------------- emails
 
   function renderEmails(emails) {
@@ -258,7 +253,6 @@
     html += renderIndicators(report.indicators);
     html += renderLocal(report.local);
     html += renderAttachments(report.attachments);
-    html += renderBody(report.body);
     return html;
   }
 

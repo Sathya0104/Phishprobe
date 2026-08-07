@@ -375,6 +375,27 @@ input[type="text"]:focus {
   font-size: 0.9rem;
 }
 
+.banner .banner-note {
+  margin-top: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  color: #7c2d12;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.banner .banner-note .banner-note-icon {
+  color: #eab308;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  flex: 0 0 auto;
+}
+
 /* ---------- chips & counts ---------- */
 
 .chips {
@@ -696,10 +717,30 @@ footer img {
 
 /* ---------- responsive tweaks ---------- */
 
+/* Medium screens / tablets (<= 900px) */
+@media (max-width: 900px) {
+  .container {
+    padding: 20px 14px 44px;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Phones (<= 640px) */
 @media (max-width: 640px) {
   .navbar {
     padding: 10px 14px;
     gap: 8px;
+  }
+
+  .brand-logo {
+    height: 40px;
+  }
+
+  .brand-name {
+    font-size: 1.15rem;
   }
 
   .nav-links {
@@ -711,21 +752,105 @@ footer img {
     flex: 1;
     text-align: center;
     padding: 8px 6px;
+    font-size: 0.84rem;
+  }
+
+  .container {
+    padding: 16px 12px 40px;
+  }
+
+  .hero {
+    padding: 4px 0 12px;
+  }
+
+  .hero-logo {
+    height: 104px;
   }
 
   .hero h1 {
-    font-size: 1.6rem;
-  }
-
-  .banner .v-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
   .card {
     padding: 16px;
   }
 
+  .input-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .banner {
+    padding: 16px 16px;
+  }
+
+  .banner .v-title {
+    font-size: 1.4rem;
+  }
+
+  .banner .rec,
+  .banner .banner-note {
+    padding: 9px 12px;
+    font-size: 0.86rem;
+  }
+
+  .modal {
+    padding: 16px;
+  }
+
   table.tbl {
-    min-width: 480px;
+    min-width: 420px;
+  }
+
+  section.block > h2 {
+    font-size: 0.94rem;
+  }
+}
+
+/* Small phones (<= 400px) */
+@media (max-width: 400px) {
+  .brand-logo {
+    height: 34px;
+  }
+
+  .nav-links a {
+    font-size: 0.78rem;
+    padding: 7px 4px;
+  }
+
+  .hero-logo {
+    height: 88px;
+  }
+
+  .hero h1 {
+    font-size: 1.3rem;
+  }
+
+  .banner .v-line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .banner .v-conf {
+    font-size: 0.78rem;
+  }
+
+  table.tbl {
+    min-width: 340px;
+  }
+
+  .info-grid,
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  footer {
+    font-size: 0.7rem;
   }
 }

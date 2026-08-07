@@ -146,18 +146,25 @@ def _finalize(rec, attributes):
         rec["detection"] = (f"{m} malicious / {s} suspicious / {h} harmless / "
                             f"{u} undetected")
         rec["risk_score"] = min(100, m * 30 + s * 12)
-        rec["verdict"] = "Malicious" if m else ("Suspicious" if s else "Safe")
-    else:
-        rec["verdict"] = "Unknown"
-        rec["detection"] = "No VirusTotal record available"
-
-    if rec["verdict"] != "Unknown":
+        if m:
+            rec["verdict"] = "Malicious"
+        elif s:
+            rec["verdict"] = "Suspicious"
+        elif h:
+            rec["verdict"] = "Safe"
+        else:
+            rec["verdict"] = "Unknown"
         rec["sources"] = [SOURCE_NAME]
         if m or s:
             rec["note"] = "Flagged by VirusTotal's multi-engine scan."
-        else:
+        elif h:
             rec["note"] = "No engines flagged this indicator in VirusTotal."
+        else:
+            rec["note"] = ("VirusTotal has not actively evaluated this indicator "
+                           "yet - treat it as unverified.")
     else:
+        rec["verdict"] = "Unknown"
+        rec["detection"] = "No VirusTotal record available"
         rec["note"] = "No VirusTotal record was found for this indicator."
 
     rec["reputation"] = attributes.get("reputation")
