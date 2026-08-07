@@ -2,10 +2,10 @@
 
 > **Author: Sathyanarayana**
 
-**PhishProbe** is a phishing email analyzer. Paste a raw email header — or a
-complete raw email / `.eml` source — and get an instant, explainable verdict
-backed by SPF/DKIM/DMARC authentication checks, VirusTotal reputation lookups,
-brand typosquatting detection, and content red-flag analysis.
+**PhishProbe** is a phishing email analyzer built for SOC analysts. Paste a raw
+email header — or a complete raw email / `.eml` source — and get an instant,
+explainable verdict backed by SPF/DKIM/DMARC authentication checks, VirusTotal
+reputation lookups, brand typosquatting detection, and content red-flag analysis.
 
 ---
 
@@ -16,13 +16,72 @@ and try it in your browser. No signup needed.
 
 ---
 
-## Screenshots
+## Why SOC analysts should use PhishProbe
 
-![Home page](screenshots/home.png)
+Phishing remains the most common initial-access vector in modern breach
+investigations. Every reported phishing email a SOC handles must go through
+triage, investigation and containment — and each minute that email sits in an
+inbox is a minute of exposure. PhishProbe attacks this problem directly: it
+turns a raw email into a structured, explainable risk verdict in seconds.
 
-![Analysis report](screenshots/report.png)
+### Cut MTTD — Mean Time To Detect
 
-![Full email analyzer](screenshots/full.png)
+MTTD measures how long it takes to *discover* that a phishing email exists.
+Manual triage can take minutes per message: opening the raw header, reading the
+Received chain, checking SPF/DKIM/DMARC, and searching domain/IP reputation —
+all by hand.
+
+PhishProbe collapses that into a single paste:
+
+- Runs SPF / DKIM / DMARC / ARC authentication checks automatically.
+- Resolves every URL, domain, IP and attachment hash against reputation feeds.
+- Detects typosquatted brand domains, link tricks (shorteners, raw-IP links,
+  mismatched anchor text) and mismatched Reply-To/From addresses.
+- Flags urgency/credential language and malware keywords.
+- Returns one verdict with confidence % and plain-language reasoning.
+
+**Result:** what used to take minutes now takes seconds — **MTTD drops from
+minutes to seconds** per message.
+
+### Cut MTTR — Mean Time To Respond
+
+MTTR measures how long it takes to *contain and resolve* an incident after
+detection. Slow MTTR usually means analysts are re-deriving evidence by hand
+instead of acting on it.
+
+PhishProbe shortens the response loop by delivering actionable output:
+
+- A clear verdict (Malicious / Suspicious / Moderate / Safe) with confidence %.
+- The exact list of flagged IOCs: domains, URLs, IPs and file hashes.
+- One-click verification links to independent threat-intel platforms.
+- SHA-256 (and MD5/SHA-1) hashes for attachment files, ready to block or share.
+- An educational "why this matters" note per signal, so the analyst can explain
+  the conclusion to stakeholders without extra research.
+
+**Result:** analysts go straight from *"this email is bad"* to *"block these
+IOCs"* — **MTTR drops from hours to minutes**.
+
+---
+
+## What a SOC analyst can achieve with PhishProbe
+
+- **Faster phishing triage** — a verdict in seconds for every reported email,
+  so the queue stops piling up.
+- **Reproducible investigations** — the same email always produces the same
+  structured, explainable report, so any analyst reaches the same conclusion.
+- **Immediate IOC extraction** — domains, URLs, IPs and file hashes come out
+  labelled with their risk, ready to feed into blocking or detection rules.
+- **Confident escalation** — a documented, evidence-backed verdict makes it
+  easy to justify escalation to incident response or end-user remediation.
+- **Defensible metrics** — verdict counts, detected IOCs and per-campaign
+  results can be reported to management as measurable improvements in
+  detection and response (lower MTTD / MTTR).
+- **On-the-job training** — the built-in explanations teach junior analysts why
+  each signal matters, turning every investigation into practice.
+- **Reduced alert fatigue** — clear verdicts and confidence % help prioritise
+  which reported emails need immediate action and which can be cleared.
+- **Privacy-aware workflow** — no analysis history is stored; you decide what
+  to do with the results.
 
 ---
 
