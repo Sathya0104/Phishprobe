@@ -18,6 +18,13 @@ and try it in your browser. No signup needed.
 
 ## Why SOC analysts should use PhishProbe
 
+[![MTTD](https://img.shields.io/badge/MTTD-%7E30%20seconds-blue)](https://phishprobe.onrender.com)
+[![MTTR](https://img.shields.io/badge/MTTR-%7E15%20minutes-green)](https://phishprobe.onrender.com)
+[![Verdicts](https://img.shields.io/badge/Verdicts-5%20levels-orange)](https://phishprobe.onrender.com)
+[![IOC Extraction](https://img.shields.io/badge/IOC%20Extraction-URL%20%7C%20Domain%20%7C%20IP%20%7C%20Hash-blueviolet)](https://phishprobe.onrender.com)
+[![Authentication](https://img.shields.io/badge/Auth-SPF%20%7C%20DKIM%20%7C%20DMARC%20%7C%20ARC-success)](https://phishprobe.onrender.com)
+[![Typosquatting](https://img.shields.io/badge/Typosquatting-20%2B%20brands-critical)](https://phishprobe.onrender.com)
+
 Phishing remains the most common initial-access vector in modern breach
 investigations. Every reported phishing email a SOC handles must go through
 triage, investigation and containment — and each minute that email sits in an
