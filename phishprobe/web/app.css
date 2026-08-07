@@ -803,8 +803,46 @@ footer img {
     padding: 16px;
   }
 
-  table.tbl {
-    min-width: 420px;
+  /* Stack table rows into readable cards instead of horizontal scrolling */
+  table.tbl,
+  table.tbl tbody,
+  table.tbl tr,
+  table.tbl td {
+    display: block;
+    width: 100%;
+  }
+
+  table.tbl thead {
+    display: none;
+  }
+
+  table.tbl tr {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px 12px;
+    margin-bottom: 10px;
+  }
+
+  table.tbl td {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+  }
+
+  table.tbl td:last-child {
+    border-bottom: none;
+  }
+
+  table.tbl td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 3px;
   }
 
   section.block > h2 {
@@ -839,10 +877,6 @@ footer img {
 
   .banner .v-conf {
     font-size: 0.78rem;
-  }
-
-  table.tbl {
-    min-width: 340px;
   }
 
   .info-grid,

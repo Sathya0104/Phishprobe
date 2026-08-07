@@ -143,10 +143,10 @@
     if (item.note) extra.push(item.note);
     return (
       "<tr>" +
-        "<td>" + esc(item.type) + "</td>" +
-        '<td class="mono">' + esc(value) + "</td>" +
-        "<td>" + chip(item.verdict || "Unknown", item.verdict || "unknown") + "</td>" +
-        "<td>" + esc(extra.join(" &middot; ")) + "</td>" +
+        '<td data-label="Type">' + esc(item.type) + "</td>" +
+        '<td class="mono" data-label="Indicator">' + esc(value) + "</td>" +
+        '<td data-label="Verdict">' + chip(item.verdict || "Unknown", item.verdict || "unknown") + "</td>" +
+        '<td data-label="Details">' + esc(extra.join(" &middot; ")) + "</td>" +
       "</tr>"
     );
   }
@@ -220,9 +220,13 @@
         ? '<span class="chip malicious">dangerous</span>'
         : '<span class="chip safe">ok</span>';
       return (
-        "<tr><td>" + esc(a.filename) + "</td><td>" + esc(a.content_type) +
-        "</td><td>" + esc(a.size) + " bytes</td><td>" + esc(a.extension) +
-        "</td><td>" + risk + "</td></tr>"
+        "<tr>" +
+          '<td data-label="Name">' + esc(a.filename) + "</td>" +
+          '<td data-label="Type">' + esc(a.content_type) + "</td>" +
+          '<td data-label="Size">' + esc(a.size) + " bytes</td>" +
+          '<td data-label="Ext">' + esc(a.extension) + "</td>" +
+          '<td data-label="Risk">' + risk + "</td>" +
+        "</tr>"
       );
     }).join("");
     return (
@@ -312,9 +316,9 @@
     if (!flagged.length) return;
     var rows = flagged.map(function (item) {
       return "<tr>" +
-               '<td class="mono">' + esc(item.value) + "</td>" +
-               "<td>" + chip(item.verdict, item.verdict) + "</td>" +
-               "<td>" + verifyLinks(item).join("") + "</td>" +
+               '<td class="mono" data-label="Indicator">' + esc(item.value) + "</td>" +
+               '<td data-label="Verdict">' + chip(item.verdict, item.verdict) + "</td>" +
+               '<td data-label="Check on">' + verifyLinks(item).join("") + "</td>" +
              "</tr>";
     }).join("");
     var html =
