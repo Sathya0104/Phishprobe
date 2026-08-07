@@ -95,18 +95,18 @@ def _http_json(url, data=None, method="GET", tries=4):
                 return json.loads(resp.read().decode("utf-8"))
         except HTTPError as e:
             if e.code == 401:
-                raise RuntimeError("VirusTotal rejected the API key (HTTP 401)")
+                raise RuntimeError("Reputation service rejected the API key (HTTP 401)")
             if e.code == 403:
-                raise RuntimeError("VirusTotal denied access (HTTP 403) - check quota")
+                raise RuntimeError("Reputation service denied access (HTTP 403) - check quota")
             if e.code == 429:
                 last = "rate_limited"
                 time.sleep(_RETRY_AFTER)
                 continue
-            raise RuntimeError(f"VirusTotal HTTP {e.code}")
+            raise RuntimeError(f"Reputation HTTP {e.code}")
         except (URLError, TimeoutError, OSError) as e:
             last = str(e)
             time.sleep(3)
-    raise RuntimeError(f"VirusTotal request failed: {last or 'unknown error'}")
+    raise RuntimeError(f"Reputation request failed: {last or 'unknown error'}")
 
 
 def _empty_record(value, kind):
@@ -156,16 +156,16 @@ def _finalize(rec, attributes):
             rec["verdict"] = "Unknown"
         rec["sources"] = [SOURCE_NAME]
         if m or s:
-            rec["note"] = "Flagged by VirusTotal's multi-engine scan."
+            rec["note"] = "Flagged by multiple security engines."
         elif h:
-            rec["note"] = "No engines flagged this indicator in VirusTotal."
+            rec["note"] = "No engines flagged this indicator as suspicious."
         else:
-            rec["note"] = ("VirusTotal has not actively evaluated this indicator "
+            rec["note"] = ("No security engine has actively evaluated this indicator "
                            "yet - treat it as unverified.")
     else:
         rec["verdict"] = "Unknown"
-        rec["detection"] = "No VirusTotal record available"
-        rec["note"] = "No VirusTotal record was found for this indicator."
+        rec["detection"] = "No reputation record available"
+        rec["note"] = "No reputation record was found for this indicator."
 
     rec["reputation"] = attributes.get("reputation")
     rec["community_score"] = attributes.get("community_score")
@@ -208,13 +208,13 @@ def _lookup_url(url):
         return _finalize(rec, (r.get("data") or {}).get("attributes") or {})
     except RuntimeError as e:
         if "HTTP 404" not in str(e):
-            rec["note"] = f"VirusTotal URL lookup error: {e}"
+            rec["note"] = f"Reputation URL lookup error: {e}"
             return rec
     data = urllib.parse.urlencode({"url": url}).encode()
     r = _http_json(f"{_API}/urls", data=data, method="POST")
     analysis_id = (r.get("data") or {}).get("id")
     if not analysis_id:
-        rec["note"] = "VirusTotal did not return an analysis id for the URL."
+        rec["note"] = "Reputation service did not return an analysis id for the URL."
         return rec
     for _ in range(20):
         time.sleep(4)
@@ -224,9 +224,9 @@ def _lookup_url(url):
             if (attrs.get("status") or "").lower() == "completed":
                 return _finalize(rec, attrs)
         except RuntimeError as e:
-            rec["note"] = f"VirusTotal analysis poll error: {e}"
+            rec["note"] = f"Reputation analysis poll error: {e}"
             return rec
-    rec["note"] = "VirusTotal analysis did not complete in time."
+    rec["note"] = "Reputation analysis did not complete in time."
     return rec
 
 
@@ -238,10 +238,10 @@ def _lookup_domain(domain):
     try:
         r = _http_json(f"{_API}/domains/{urllib.parse.quote(domain, safe='')}")
     except RuntimeError as e:
-        rec["note"] = f"VirusTotal domain lookup error: {e}"
+        rec["note"] = f"Reputation domain lookup error: {e}"
         return rec
     if not r.get("data"):
-        rec["note"] = "No VirusTotal record found for this domain."
+        rec["note"] = "No reputation record found for this domain."
         return rec
     return _finalize(rec, (r.get("data") or {}).get("attributes") or {})
 
@@ -254,10 +254,10 @@ def _lookup_ip(ip):
     try:
         r = _http_json(f"{_API}/ip_addresses/{urllib.parse.quote(ip, safe='')}")
     except RuntimeError as e:
-        rec["note"] = f"VirusTotal IP lookup error: {e}"
+        rec["note"] = f"Reputation IP lookup error: {e}"
         return rec
     if not r.get("data"):
-        rec["note"] = "No VirusTotal record found for this IP."
+        rec["note"] = "No reputation record found for this IP."
         return rec
     return _finalize(rec, (r.get("data") or {}).get("attributes") or {})
 
@@ -270,7 +270,7 @@ def _lookup_file(hash_value):
     try:
         r = _http_json(f"{_API}/files/{urllib.parse.quote(hash_value, safe='')}")
     except RuntimeError as e:
-        rec["note"] = f"VirusTotal file lookup error: {e}"
+        rec["note"] = f"Reputation file lookup error: {e}"
         return rec
     if not r.get("data"):
         rec["note"] = "No VirusTotal record found for this file hash."

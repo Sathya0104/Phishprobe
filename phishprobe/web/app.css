@@ -268,7 +268,7 @@ input[type="text"]:focus {
 
 .guide-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
 
@@ -447,7 +447,7 @@ input[type="text"]:focus {
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 
@@ -726,6 +726,56 @@ footer img {
   .hero h1 {
     font-size: 1.8rem;
   }
+
+  .guide-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Stack table rows into readable cards instead of horizontal scrolling */
+  table.tbl,
+  table.tbl tbody,
+  table.tbl tr,
+  table.tbl td {
+    display: block;
+    width: 100%;
+  }
+
+  table.tbl thead {
+    display: none;
+  }
+
+  table.tbl tr {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px 12px;
+    margin-bottom: 10px;
+  }
+
+  table.tbl td {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+  }
+
+  table.tbl td:last-child {
+    border-bottom: none;
+  }
+
+  table.tbl td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
 }
 
 /* Phones (<= 640px) */
@@ -775,6 +825,10 @@ footer img {
     padding: 16px;
   }
 
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+
   .input-actions {
     flex-direction: column;
     align-items: stretch;
@@ -801,48 +855,6 @@ footer img {
 
   .modal {
     padding: 16px;
-  }
-
-  /* Stack table rows into readable cards instead of horizontal scrolling */
-  table.tbl,
-  table.tbl tbody,
-  table.tbl tr,
-  table.tbl td {
-    display: block;
-    width: 100%;
-  }
-
-  table.tbl thead {
-    display: none;
-  }
-
-  table.tbl tr {
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 4px 12px;
-    margin-bottom: 10px;
-  }
-
-  table.tbl td {
-    border: none;
-    border-bottom: 1px solid var(--border);
-    padding: 8px 0;
-  }
-
-  table.tbl td:last-child {
-    border-bottom: none;
-  }
-
-  table.tbl td::before {
-    content: attr(data-label);
-    display: block;
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    margin-bottom: 3px;
   }
 
   section.block > h2 {

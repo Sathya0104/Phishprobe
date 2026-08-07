@@ -44,12 +44,12 @@ def _learning(severity, source):
     notes = {
         "auth_fail": "An explicit SPF/DKIM/DMARC failure means the message failed sender "
                      "validation. Legitimate mail from that domain would normally pass.",
-        "reputation_malicious": "When VirusTotal's multi-engine scan flags an "
+        "reputation_malicious": "When multiple security engines flag an "
                                 "indicator as malicious, it is a strong sign the "
                                 "email is part of an attack.",
-        "reputation_suspicious": "A VirusTotal suspicious detection is not proof, "
-                                 "but it raises the risk that the destination is "
-                                 "untrusted.",
+        "reputation_suspicious": "A suspicious detection by multiple security "
+                                 "engines is not proof, but it raises the risk "
+                                 "that the destination is untrusted.",
         "dangerous_attachment": "Executable, script or macro-enabled files can run code on "
                                 "your machine when opened.",
         "link_anomaly": "Links that hide their destination or use a raw IP are common in "
@@ -169,14 +169,14 @@ def build_evidence(payload):
                 evidence.append({
                     "severity": "high",
                     "source": "reputation_malicious",
-                    "message": (f"VirusTotal flags {label} '{r.get('value')}' as malicious "
+                    "message": (f"Security engines flag {label} '{r.get('value')}' as malicious "
                                 f"({r.get('detection_ratio')} engines)."),
                 })
             elif verdict == "suspicious":
                 evidence.append({
                     "severity": "medium",
                     "source": "reputation_suspicious",
-                    "message": (f"VirusTotal flags {label} '{r.get('value')}' as suspicious "
+                    "message": (f"Security engines flag {label} '{r.get('value')}' as suspicious "
                                 f"({r.get('detection_ratio')} engines)."),
                 })
             # Clean (Safe) VirusTotal results are still counted as positive

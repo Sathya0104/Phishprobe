@@ -72,7 +72,7 @@
     var note =
       '<div class="banner-note"><span class="banner-note-icon">&#9888;</span><span>' +
         "Before taking any action, cross-check the identified indicators (IOCs) against " +
-        "independent threat-intelligence platforms (e.g., VirusTotal, urlscan.io, AbuseIPDB). " +
+        "independent threat-intelligence platforms (e.g., urlscan.io, AbuseIPDB, AlienVault OTX). " +
         'A detection count of &quot;0/91&quot; only means no engine has flagged the indicator ' +
         "yet - it is not proof that it is safe. Following the zero-trust principle, never trust, " +
         "always verify - we recommend manually confirming the flagged domains and URLs before " +
@@ -262,7 +262,7 @@
 
   // ------------------------------------------------------- manual verification
 
-  // Collect every indicator VirusTotal (or inherited verdicts) flagged.
+  // Collect every indicator security engines (or inherited verdicts) flagged.
   function flaggedIndicators(report) {
     var out = [];
     var groups = ["urls", "domains", "ips", "files"];
@@ -285,8 +285,6 @@
       try { host = new URL(v).hostname; } catch (e) { /* keep raw */ }
     }
     var links = [];
-    links.push('<a class="v-link" href="https://www.virustotal.com/gui/search/' +
-               encodeURIComponent(v) + '" target="_blank" rel="noopener">VirusTotal</a>');
     if (item.type === "IP") {
       links.push('<a class="v-link" href="https://www.abuseipdb.com/check/' +
                  encodeURIComponent(v) + '" target="_blank" rel="noopener">AbuseIPDB</a>');

@@ -172,8 +172,8 @@ def _propagate_url_verdicts(ti_results):
         d["risk_score"] = max(d.get("risk_score") or 0, top.get("risk_score") or 0)
         d["malicious"] = max(d.get("malicious", 0),
                              top.get("malicious", 0) or 1)
-        d["note"] = ("Verdict inherited from URL {} - flagged by VirusTotal's "
-                     "multi-engine scan.".format(top["value"]))
+        d["note"] = ("Verdict inherited from URL {} - flagged by multiple "
+                     "security engines.".format(top["value"]))
         d["sources"] = ["VirusTotal"]
     return ti_results
 
