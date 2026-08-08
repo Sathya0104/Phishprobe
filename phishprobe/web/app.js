@@ -137,8 +137,6 @@
       detail = "SHA-256: " + item.sha256;
     }
     var extra = [];
-    if (item.detection_ratio) extra.push(item.detection_ratio);
-    if (item.risk_score) extra.push("risk " + item.risk_score);
     if (item.malware_family) extra.push(item.malware_family);
     if (item.note) extra.push(item.note);
     return (
