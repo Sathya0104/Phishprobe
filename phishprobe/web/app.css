@@ -504,6 +504,12 @@ table.tbl th {
   background: var(--panel-2);
 }
 
+table.tbl th:nth-child(1),
+table.tbl td:nth-child(1) {
+  min-width: 120px;
+  white-space: nowrap;
+}
+
 table.tbl th:nth-child(3),
 table.tbl td:nth-child(3) {
   white-space: nowrap;
