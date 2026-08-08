@@ -355,7 +355,7 @@
     if (!btn) return;
     btn.disabled = on;
     btn.innerHTML = on
-      ? '<span class="spinner"></span> Analyzing... (may take ~30s)'
+      ? '<span class="spinner"></span> Analyzing... (may take up to 2 min)'
       : "Analyze";
   }
 
