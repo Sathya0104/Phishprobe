@@ -286,6 +286,11 @@ def analyze_header_only(header_text, url=None, with_lookup=True):
 
     Returns a header-focused report (no body / attachment sections).
     """
+    # A user may paste the entire raw email into the header-analyzer page. Only
+    # the header block belongs here - everything after the first blank line is
+    # the body / MIME content and must be analyzed by the full analyzer instead.
+    # Split it off so body URLs/domains/text never leak into this report.
+    header_text, _body = parser.split_header_body(header_text)
     header_norm = core.normalize_header(header_text)
     basic = parser.extract_basic_info(header_text)
     received = core.extract_received_lines(header_norm)

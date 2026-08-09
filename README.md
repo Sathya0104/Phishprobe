@@ -72,6 +72,44 @@ open the link and try it in your browser. No signup needed.
 - **Full header & Received chain** — the normalized header table and routing hops.
 - **Why this verdict** — the evidence list with an educational note per signal.
 
+## Screenshots
+
+### Header Analyzer
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.1.png" alt="Header Analyzer - input view" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.2.png" alt="Header Analyzer" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.3.png" alt="Header Analyzer - report" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.4.png" alt="Header Analyzer - verdict banner" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.5.png" alt="Header Analyzer - details" width="720">
+</p>
+
+### Full Email Analyzer
+
+<p align="center">
+  <img src="phishprobe/screenshots/2.1.png" alt="Full Email Analyzer - input view" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/2.2.png" alt="Full Email Analyzer - report" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/2.3.png" alt="Full Email Analyzer - verdict banner" width="720">
+</p>
+
 ## Why PhishProbe is useful
 
 - **Actionable at a glance** — the risk gauge and threat-type chip turn a

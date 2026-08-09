@@ -212,7 +212,7 @@
     html += indicatorTable("URLs", indicators.urls);
     html += indicatorTable("Domains", indicators.domains);
     html += indicatorTable("IP addresses", indicators.ips);
-    html += indicatorTable("Attachments (hashes)", indicators.files);
+    if (PAGE_IS_FULL) html += indicatorTable("Attachments (hashes)", indicators.files);
     return html;
   }
 
@@ -297,10 +297,10 @@
     html += renderSummary(report.summary);
     html += section("Email summary", renderEmail(report.email));
     html += section("Authentication (SPF / DKIM / DMARC / ARC)", renderAuth(report.header.auth));
-    html += renderEmails(report.indicators.emails);
+    if (PAGE_IS_FULL) html += renderEmails(report.indicators.emails);
     html += renderIndicators(report.indicators);
     html += renderLocal(report.local);
-    html += renderAttachments(report.attachments);
+    if (PAGE_IS_FULL) html += renderAttachments(report.attachments);
     return html;
   }
 

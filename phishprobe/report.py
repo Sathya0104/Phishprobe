@@ -239,9 +239,6 @@ def build_header_report(header_norm, basic, received, auth, return_path,
         "urls": len(urls),
         "domains": len(domains),
         "ips": len(ips),
-        "files": 0,
-        "emails": 0,
-        "attachments": 0,
         "sources": ["VirusTotal"],
     }
 
@@ -288,13 +285,10 @@ def build_header_report(header_norm, basic, received, auth, return_path,
             "has_auth_header": auth.get("has_authentication_results", False),
         },
         "indicators": {
-            "emails": [],
             "urls": ti_results["urls"],
             "domains": ti_results["domains"],
             "ips": ti_results["ips"],
-            "files": [],
         },
-        "attachments": [],
         "local": {
             "mismatches": mismatches,
             "link_anomalies": [],
