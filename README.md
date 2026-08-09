@@ -32,7 +32,10 @@ open the link and try it in your browser. No signup needed.
 | Link inspection | Shorteners, raw-IP links, `@`-redirect tricks, mismatched anchor text. |
 | Mismatch checks | From vs Reply-To / Return-Path / Message-ID domain comparisons. |
 | Attachments | MIME extraction with MD5 / SHA-1 / SHA-256 hashes and high-risk extension flags. |
-| Verdicts | Malicious / Suspicious / Moderate / Safe / Unknown with confidence % and reasons. |
+| Verdicts | Malicious / Suspicious / Moderate / Safe / Unknown with confidence %, a semi-circle risk gauge and plain-language reasons. |
+| Threat-type detection | Classifies flagged content as malware, phishing or both and issues a matching containment recommendation. |
+| Quoted-Printable handling | Joins QP soft line breaks so long wrapped URLs/domains are recovered whole instead of truncated. |
+| Cross-check reminder | A yellow note under the recommendation prompts analysts to verify flagged IOCs on independent threat-intel platforms. |
 | Privacy | Your VirusTotal API key stays on the backend; results are never stored. |
 
 ## How to use it
@@ -54,8 +57,13 @@ open the link and try it in your browser. No signup needed.
 
 ### 3. Reading the report
 
-- **Verdict banner** — overall verdict, confidence %, the explanation and a
-  plain-language recommendation.
+- **Verdict banner** — overall verdict with a semi-circle risk gauge, a
+  threat-type chip (malware / phishing / suspicious), the explanation and a
+  plain-language containment recommendation.
+- **Threat popup** — after a flagged analysis, a modal lists the flagged
+  indicators with their verdicts; the heading names the detected threat type.
+- **Cross-check reminder** — a yellow note under the recommendation nudges you
+  to verify flagged IOCs on independent threat-intel platforms before acting.
 - **Email summary** — From / To / Subject / Reply-To / Return-Path / Message-ID.
 - **Authentication** — SPF / DKIM / DMARC / ARC status per header.
 - **Indicators** — every URL, domain, IP and file with its VirusTotal verdict.
@@ -66,6 +74,8 @@ open the link and try it in your browser. No signup needed.
 
 ## Why PhishProbe is useful
 
+- **Actionable at a glance** — the risk gauge and threat-type chip turn a
+  verdict into a quick visual cue before you even read the details.
 - **Instant triage** for suspicious mail before opening links.
 - **Transparent and explainable** — every verdict lists its exact reasons.
 - **Private** — runs on your own infrastructure; only indicator lookups leave it.
@@ -112,7 +122,8 @@ PhishProbe shortens the response loop by delivering actionable output:
 
 - A clear verdict (Malicious / Suspicious / Moderate / Safe) with confidence %.
 - The exact list of flagged IOCs: domains, URLs, IPs and file hashes.
-- One-click verification links to independent threat-intel platforms.
+- A cross-check reminder that points analysts to independent threat-intel
+  platforms for manual confirmation before they act.
 - SHA-256 (and MD5/SHA-1) hashes for attachment files, ready to block or share.
 - An educational "why this matters" note per signal, so the analyst can explain
   the conclusion to stakeholders without extra research.

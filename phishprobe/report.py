@@ -39,6 +39,68 @@ SEVERITY_LABEL = {
     "info": "Information",
 }
 
+_PHISH_TERMS = ("phish", "deceptive", "scam")
+_MALWARE_TERMS = ("malwar", "trojan", "ransom", "botnet", "spyware",
+                  "keylogger", "banker", "stealer", "adware", "agent",
+                  "worm", "loader")
+
+_TYPE_TEXT = {
+    "malware": "Do not open any links or attachments. PhishProbe flagged this "
+               "email as containing malware. Report the email as phishing and "
+               "delete it immediately.",
+    "phishing": "Do not open any links or attachments. PhishProbe flagged this "
+                "email as containing phishing content. Report the email as "
+                "phishing and delete it immediately.",
+    "malware_phishing": "Do not open any links or attachments. PhishProbe "
+                        "flagged this email as containing malware and phishing "
+                        "content. Report the email as phishing and delete it "
+                        "immediately.",
+    "suspicious": "Do not open any links or attachments. PhishProbe flagged "
+                  "this email as suspicious - it may contain malware or "
+                  "phishing content. Report the email as phishing and delete "
+                  "it immediately.",
+}
+
+
+def _threat_type(indicators):
+    """Classify VirusTotal results into a threat type and the flagged names."""
+    malware = phishing = suspicious = False
+    names = []
+    for r in indicators:
+        verdict = r.get("verdict")
+        labels = " ".join(r.get("threat_labels") or []).lower()
+        name = r.get("value") or r.get("filename") or ""
+        flagged = (verdict == "Malicious" or r.get("malware_family")
+                   or any(t in labels for t in _MALWARE_TERMS + _PHISH_TERMS))
+        if flagged:
+            if name:
+                names.append(name)
+            if any(t in labels for t in _PHISH_TERMS):
+                phishing = True
+            if r.get("malware_family") or any(t in labels for t in _MALWARE_TERMS):
+                malware = True
+            if not (malware or phishing):
+                malware = True
+        elif verdict == "Suspicious":
+            suspicious = True
+    if malware and phishing:
+        return "malware_phishing", names
+    if malware:
+        return "malware", names
+    if phishing:
+        return "phishing", names
+    if suspicious:
+        return "suspicious", names
+    return None, names
+
+
+def _recommendation(v, indicators):
+    """Pick a recommendation based on the VirusTotal threat type."""
+    kind, _names = _threat_type(indicators)
+    if kind:
+        return _TYPE_TEXT[kind]
+    return RECOMMENDATIONS.get(v, RECOMMENDATIONS["Unknown"])
+
 
 def format_address(value):
     from .parser import format_address_field
@@ -77,12 +139,16 @@ def build_report(parsed, header_norm, basic, received, auth, return_path,
         "unknown": sum(1 for r in all_indicators if r["verdict"] == "Unknown"),
     }
 
+    kind, _ = _threat_type(all_indicators)
+    threat_type = kind or ("safe" if v == "Safe" else "unknown")
+
     result = {
         "summary": {
             "verdict": v,
             "confidence": s["confidence"],
             "explanation": s["explanation"],
-            "recommendation": RECOMMENDATIONS.get(v, RECOMMENDATIONS["Unknown"]),
+            "recommendation": _recommendation(v, all_indicators),
+            "threat_type": threat_type,
             "reasons": s["reasons"],
             "counts": counts,
             "evidence": s["evidence"],
@@ -191,12 +257,16 @@ def build_header_report(header_norm, basic, received, auth, return_path,
         "unknown": sum(1 for r in all_indicators if r["verdict"] == "Unknown"),
     }
 
+    kind, _ = _threat_type(all_indicators)
+    threat_type = kind or ("safe" if v == "Safe" else "unknown")
+
     result = {
         "summary": {
             "verdict": v,
             "confidence": s["confidence"],
             "explanation": s["explanation"],
-            "recommendation": RECOMMENDATIONS.get(v, RECOMMENDATIONS["Unknown"]),
+            "recommendation": _recommendation(v, all_indicators),
+            "threat_type": threat_type,
             "reasons": s["reasons"],
             "counts": counts,
             "evidence": s["evidence"],

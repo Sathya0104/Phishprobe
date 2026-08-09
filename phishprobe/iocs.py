@@ -84,6 +84,10 @@ def extract_anchor_pairs(text):
 
 
 def extract_domains(text):
+    # Join Quoted-Printable soft line breaks ('=' + newline) so wrapped URLs
+    # yield their real domain instead of a fragment or nothing.
+    text = re.sub(r"=\r\n", "", text)
+    text = re.sub(r"=\n", "", text)
     domains = set()
     for m in EMAIL_RE.findall(text):
         domains.add(m.split("@")[1].lower())
@@ -97,7 +101,7 @@ def extract_domains(text):
             domains.add(dom)
     return sorted(
         d for d in domains
-        if "." in d and not re.match(r"^\d+(\.\d+){2,}$", d))
+        if "." in d and "=" not in d and not re.match(r"^\d+(\.\d+){2,}$", d))
 
 
 def extract_ips(header_text, body_text):

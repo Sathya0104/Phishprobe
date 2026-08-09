@@ -375,6 +375,8 @@ input[type="text"]:focus {
   font-size: 0.9rem;
 }
 
+/* ---------- yellow warning note (below recommendation) ---------- */
+
 .banner .banner-note {
   margin-top: 6px;
   padding: 10px 14px;
@@ -423,26 +425,70 @@ input[type="text"]:focus {
 .chip.neutral { color: #000; border-color: #000; background: #fff; }
 .chip.unknown { color: var(--muted); }
 
-.conf-meter {
-  height: 8px;
-  border-radius: 999px;
-  background: var(--panel-2);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  margin-top: 10px;
+/* ---------- risk-score gauge ---------- */
+
+.banner-head {
+  display: flex;
+  align-items: center;
+  gap: 24px;
 }
 
-.conf-meter .fill {
-  height: 100%;
-  border-radius: 999px;
-  transition: width 0.6s ease;
+.gauge-wrap {
+  flex: 0 0 auto;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.conf-meter .fill.malicious { background: linear-gradient(90deg, #f87171, var(--danger)); }
-.conf-meter .fill.suspicious { background: linear-gradient(90deg, #fbbf24, var(--warn)); }
-.conf-meter .fill.moderate { background: linear-gradient(90deg, #60a5fa, var(--info)); }
-.conf-meter .fill.safe { background: linear-gradient(90deg, #4ade80, var(--safe)); }
-.conf-meter .fill.unknown { background: linear-gradient(90deg, #94a3b8, var(--muted)); }
+.gauge {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+}
+
+.gauge-track {
+  fill: none;
+  stroke: var(--panel-2);
+  stroke-width: 14;
+  stroke-linecap: round;
+}
+
+.gauge-fill {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-dashoffset: 0;
+  transition: stroke-dasharray 0.6s ease;
+}
+
+.gauge-fill.malicious { stroke: var(--danger); }
+.gauge-fill.suspicious { stroke: var(--warn); }
+.gauge-fill.moderate { stroke: var(--info); }
+.gauge-fill.safe { stroke: var(--safe); }
+.gauge-fill.unknown { stroke: var(--muted); }
+
+.gauge-num {
+  text-anchor: middle;
+  font-size: 30px;
+  font-weight: 800;
+  fill: var(--text);
+}
+
+.gauge-cap {
+  text-anchor: middle;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  fill: var(--muted);
+}
+
+.banner-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
 
 /* ---------- grids / tables ---------- */
 
@@ -709,24 +755,6 @@ footer img {
   text-align: right;
 }
 
-.v-link {
-  display: inline-block;
-  margin: 2px 6px 2px 0;
-  padding: 4px 10px;
-  border: 1px solid var(--accent-2);
-  border-radius: 8px;
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 0.78rem;
-  font-weight: 600;
-  background: var(--accent-soft);
-}
-
-.v-link:hover {
-  background: var(--accent);
-  color: #ffffff;
-}
-
 /* ---------- responsive tweaks ---------- */
 
 /* Medium screens / tablets (<= 900px) */
@@ -857,6 +885,15 @@ footer img {
 
   .banner .v-title {
     font-size: 1.4rem;
+  }
+
+  .banner-head {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .gauge-wrap {
+    width: 150px;
   }
 
   .banner .rec,

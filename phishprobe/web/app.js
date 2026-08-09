@@ -50,6 +50,31 @@
     return '<span class="chip ' + chipClass(cls) + '">' + esc(label) + "</span>";
   }
 
+  // Threat-type chip (suspicious / malware / phishing) from the report.
+  function threatTypeChip(t) {
+    var map = {
+      "malware": ["malicious", "Malware"],
+      "phishing": ["malicious", "Phishing"],
+      "malware_phishing": ["malicious", "Malware & Phishing"],
+      "suspicious": ["suspicious", "Suspicious"]
+    };
+    var m = map[String(t || "").toLowerCase()];
+    return m ? chip(m[1], m[0]) : "";
+  }
+
+  // Modal heading based on the detected threat type.
+  function threatTypeLabel(t) {
+    var map = {
+      "malware": "Malware detected",
+      "phishing": "Phishing detected",
+      "malware_phishing": "Malware and phishing detected",
+      "suspicious": "Suspicious content detected",
+      "safe": "No threats detected",
+      "unknown": "Threat indicators detected"
+    };
+    return map[String(t || "").toLowerCase()] || "Threat indicators detected";
+  }
+
   function countsRow(counts) {
     var parts = [];
     var labels = { malicious: "malicious", suspicious: "suspicious", safe: "safe", unknown: "unknown" };
@@ -67,30 +92,51 @@
 
   // ------------------------------------------------------------------ banner
 
+  // Semi-circular risk-score gauge.  The arc fills to the score percentage and
+  // takes the verdict colour (green = safe, yellow = suspicious, red =
+  // malicious, blue = moderate, grey = unknown).  The percentage sits in the
+  // centre of the semi-circle.
+  function gaugeHtml(score, verdict) {
+    var num = Math.max(0, Math.min(100, Math.round(score || 0)));
+    var v = String(verdict || "unknown").toLowerCase();
+    return (
+      '<svg class="gauge" viewBox="0 0 200 118" role="img" aria-label="Risk score ' +
+        num + " percent, verdict " + esc(verdict) + '">' +
+        '<path class="gauge-track" d="M 20 104 A 80 80 0 0 1 180 104" pathLength="100"/>' +
+        '<path class="gauge-fill ' + v + '" d="M 20 104 A 80 80 0 0 1 180 104" ' +
+          'pathLength="100" stroke-dasharray="' + num + ' 100"/>' +
+        '<text x="100" y="72" class="gauge-num">' + num + "%</text>" +
+        '<text x="100" y="94" class="gauge-cap">' + esc(verdict) + "</text>" +
+      "</svg>"
+    );
+  }
+
   function renderSummary(summary) {
     var v = summary.verdict;
     var note =
       '<div class="banner-note"><span class="banner-note-icon">&#9888;</span><span>' +
         "Before taking any action, cross-check the identified indicators (IOCs) against " +
         "independent threat-intelligence platforms (e.g., urlscan.io, AbuseIPDB, AlienVault OTX). " +
-        'A detection count of &quot;0/91&quot; only means no engine has flagged the indicator ' +
-        "yet - it is not proof that it is safe. Following the zero-trust principle, never trust, " +
-        "always verify - we recommend manually confirming the flagged domains and URLs before " +
-        "proceeding." +
+        "Following the zero-trust principle, never trust, always verify - we recommend manually " +
+        "confirming the flagged domains and URLs before proceeding." +
       "</span></div>";
     return (
       '<div class="banner ' + verdictClass(v) + '">' +
-        '<div class="v-line">' +
-          '<span class="v-title">' + esc(v) + "</span>" +
-          '<span class="v-conf">Confidence ' + esc(summary.confidence) + "%</span>" +
+        '<div class="banner-head">' +
+          '<div class="gauge-wrap">' + gaugeHtml(summary.confidence, v) + "</div>" +
+          '<div class="banner-main">' +
+            '<div class="v-line">' +
+              '<span class="v-title">' + esc(v) + "</span>" +
+              '<span class="v-conf">Risk Score: ' + esc(summary.confidence) + "%</span>" +
+              threatTypeChip(summary.threat_type) +
+            "</div>" +
+            "<p>" + esc(summary.explanation) + "</p>" +
+            countsRow(summary.counts) +
+            '<div class="rec"><strong>Recommendation:</strong> ' +
+              esc(summary.recommendation) + "</div>" +
+            note +
+          "</div>" +
         "</div>" +
-        "<p>" + esc(summary.explanation) + "</p>" +
-        countsRow(summary.counts) +
-        '<div class="conf-meter"><div class="fill ' + verdictClass(v) +
-          '" style="width:' + Math.min(100, summary.confidence || 0) + '%"></div></div>' +
-        '<div class="rec"><strong>Recommendation:</strong> ' +
-          esc(summary.recommendation) + "</div>" +
-        note +
       "</div>"
     );
   }
@@ -275,38 +321,8 @@
     return out;
   }
 
-  // One clickable row of independent threat-intel check sites per indicator.
-  function verifyLinks(item) {
-    var v = item.value;
-    var host = v;
-    if (/^https?:\/\//i.test(v)) {
-      try { host = new URL(v).hostname; } catch (e) { /* keep raw */ }
-    }
-    var links = [];
-    if (item.type === "IP") {
-      links.push('<a class="v-link" href="https://www.abuseipdb.com/check/' +
-                 encodeURIComponent(v) + '" target="_blank" rel="noopener">AbuseIPDB</a>');
-      links.push('<a class="v-link" href="https://otx.alienvault.com/indicator/ip/' +
-                 encodeURIComponent(v) + '" target="_blank" rel="noopener">AlienVault OTX</a>');
-      links.push('<a class="v-link" href="https://www.robtex.com/ip-lookup/' +
-                 encodeURIComponent(v) + '" target="_blank" rel="noopener">Robtex</a>');
-    } else {
-      links.push('<a class="v-link" href="https://urlscan.io/search/#' +
-                 encodeURIComponent(item.type === "URL" ? v : host) +
-                 '" target="_blank" rel="noopener">urlscan.io</a>');
-      links.push('<a class="v-link" href="https://www.urlvoid.com/scan/' +
-                 encodeURIComponent(host) + '/" target="_blank" rel="noopener">URLVoid</a>');
-      if (item.type === "Domain") {
-        links.push('<a class="v-link" href="https://www.abuseipdb.com/whois/' +
-                   encodeURIComponent(host) + '" target="_blank" rel="noopener">AbuseIPDB</a>');
-      }
-    }
-    return links;
-  }
-
-  // Popup shown after analysis when something was flagged - nudges the user to
-  // double-check each indicator on independent threat-intel sites. Nothing is
-  // shown when everything is clean (nothing to verify).
+  // Popup shown after analysis when something was flagged. Nothing is shown
+  // when everything is clean.
   function showVerifyModal(report) {
     var flagged = flaggedIndicators(report);
     if (!flagged.length) return;
@@ -314,19 +330,19 @@
       return "<tr>" +
                '<td class="mono" data-label="Indicator">' + esc(item.value) + "</td>" +
                '<td data-label="Verdict">' + chip(item.verdict, item.verdict) + "</td>" +
-               '<td data-label="Check on">' + verifyLinks(item).join("") + "</td>" +
              "</tr>";
     }).join("");
+    var title = threatTypeLabel(report.summary && report.summary.threat_type);
     var html =
       '<div class="modal-overlay" id="verify-modal">' +
-        '<div class="modal" role="dialog" aria-modal="true" aria-label="Manual verification">' +
+        '<div class="modal" role="dialog" aria-modal="true" aria-label="' + title + '">' +
           '<button type="button" class="modal-close" data-close aria-label="Close">&times;</button>' +
-          "<h2>Verify before you act</h2>" +
-          '<p class="modal-intro">PhishProbe flagged the indicators below. The verdict is automated - ' +
-          "confirm each one yourself on an independent threat-intel site before opening " +
-          "links or replying.</p>" +
+          "<h2>" + esc(title) + "</h2>" +
+          '<p class="modal-intro">PhishProbe flagged the indicators below as ' +
+          esc(threatTypeLabel(report.summary && report.summary.threat_type)) +
+          ".</p>" +
           '<div class="table-wrap"><table class="tbl"><thead>' +
-          "<tr><th>Indicator</th><th>Verdict</th><th>Check on</th></tr></thead>" +
+          "<tr><th>Indicator</th><th>Verdict</th></tr></thead>" +
           "<tbody>" + rows + "</tbody></table></div>" +
           '<div class="modal-actions"><button type="button" class="btn" data-close>Close</button></div>' +
         "</div>" +
@@ -355,7 +371,7 @@
     if (!btn) return;
     btn.disabled = on;
     btn.innerHTML = on
-      ? '<span class="spinner"></span> Analyzing... (may take up to 2 min)'
+      ? '<span class="spinner"></span> Analyzing... (usually under a minute)'
       : "Analyze";
   }
 

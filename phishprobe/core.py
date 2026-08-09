@@ -238,6 +238,12 @@ SHORTENER_DOMAINS = {
 
 
 def extract_urls(body):
+    # Quoted-Printable mailers wrap long lines with '=' + newline.  Join those
+    # soft breaks first so a wrapped URL is recovered whole instead of yielding
+    # a truncated fragment like 'https://uber.co1.qualtrics.co='.
+    body = re.sub(r"=\r\n", "", body)
+    body = re.sub(r"=\n", "", body)
+
     # Plain URLs (with scheme, or a bare www. domain)
     url_pattern = r'https?://[^\s<>"\')\]]+'
     plain_urls = re.findall(url_pattern, body)
