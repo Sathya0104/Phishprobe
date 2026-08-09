@@ -19,6 +19,42 @@ open the link and try it in your browser. No signup needed.
 
 ---
 
+## Screenshots
+
+### Full Email Analyzer
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.1.png" alt="Full Email Analyzer - input view" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.2.png" alt="Full Email Analyzer" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.3.png" alt="Full Email Analyzer - report" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.4.png" alt="Full Email Analyzer - verdict banner" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/1.5.png" alt="Full Email Analyzer - details" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/2.1.png" alt="Full Email Analyzer - input view" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/2.2.png" alt="Full Email Analyzer - report" width="720">
+</p>
+
+<p align="center">
+  <img src="phishprobe/screenshots/2.3.png" alt="Full Email Analyzer - verdict banner" width="720">
+</p>
+
 ## Features
 
 | Area | What PhishProbe does |
@@ -71,42 +107,6 @@ open the link and try it in your browser. No signup needed.
 - **Attachments** — name, MIME type, size, hashes, risk.
 - **Full header & Received chain** — the normalized header table and routing hops.
 - **Why this verdict** — the evidence list with an educational note per signal.
-
-## Screenshots
-
-### Full Email Analyzer
-
-<p align="center">
-  <img src="phishprobe/screenshots/1.1.png" alt="Full Email Analyzer - input view" width="720">
-</p>
-
-<p align="center">
-  <img src="phishprobe/screenshots/1.2.png" alt="Full Email Analyzer" width="720">
-</p>
-
-<p align="center">
-  <img src="phishprobe/screenshots/1.3.png" alt="Full Email Analyzer - report" width="720">
-</p>
-
-<p align="center">
-  <img src="phishprobe/screenshots/1.4.png" alt="Full Email Analyzer - verdict banner" width="720">
-</p>
-
-<p align="center">
-  <img src="phishprobe/screenshots/1.5.png" alt="Full Email Analyzer - details" width="720">
-</p>
-
-<p align="center">
-  <img src="phishprobe/screenshots/2.1.png" alt="Full Email Analyzer - input view" width="720">
-</p>
-
-<p align="center">
-  <img src="phishprobe/screenshots/2.2.png" alt="Full Email Analyzer - report" width="720">
-</p>
-
-<p align="center">
-  <img src="phishprobe/screenshots/2.3.png" alt="Full Email Analyzer - verdict banner" width="720">
-</p>
 
 ## Why PhishProbe is useful
 
